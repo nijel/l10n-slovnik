@@ -3,16 +3,30 @@
 
 from __future__ import print_function, unicode_literals
 
-from six.moves.urllib.request import urlopen
 import re
 import sys
 
-DISKUZE = re.compile(r'\(\[http://lists.ubuntu.cz/pipermail/diskuze/[^ ]* [^\]]*diskuze\]\)')
-DISKUZE2 = re.compile(r'[; ]*\[http://lists.ubuntu.cz/pipermail/diskuze/[^ ]* [^\]]*diskuze\][; ]*')
+from six.moves.urllib.request import urlopen
 
-URL = 'http://wiki.l10n.cz/index.php?title=P%C5%99ekladatelsk%C3%BD_slovn%C3%ADk&action=raw'
+from translate.storage.tbx import tbxfile
+from translate.storage.tmx import tmxfile
+
+
+DISKUZE = re.compile(
+    r'\(\[http://lists.ubuntu.cz/pipermail/diskuze/[^ ]* [^\]]*diskuze\]\)'
+)
+DISKUZE2 = re.compile(
+    r'[; ]*\[http://lists.ubuntu.cz/pipermail/diskuze/'
+    r'[^ ]* [^\]]*diskuze\][; ]*'
+)
+
+URL = (
+    'http://wiki.l10n.cz/index.php'
+    '?title=P%C5%99ekladatelsk%C3%BD_slovn%C3%ADk&action=raw'
+)
 
 ITEMS = []
+
 
 def clean_target(target):
     '''
@@ -24,6 +38,7 @@ def clean_target(target):
     target = DISKUZE.sub('', target)
     target = DISKUZE2.sub('', target)
     return target.strip()
+
 
 def new_item(source, target):
     '''
@@ -49,6 +64,7 @@ def new_item(source, target):
     # Store new term
     ITEMS.append((source, extra, target))
 
+
 def process_dict():
     '''
     Downloads dictionary from wiki and processes words.
@@ -63,7 +79,7 @@ def process_dict():
         line = line.decode('utf-8')
         if line[0] == ';':
             # Source string
-            if len(source) > 0:
+            if source:
                 # Add new item if we had previous one
                 new_item(source, target)
                 source = ''
@@ -85,11 +101,11 @@ def process_dict():
             source = ''
             target = []
 
+
 def write_tbx(name):
     '''
     Generates TBX file from dictionary.
     '''
-    from translate.storage.tbx import tbxfile
     store = tbxfile()
 
     for source, extra, targets in ITEMS:
@@ -104,11 +120,11 @@ def write_tbx(name):
 
     store.savefile(name)
 
+
 def write_tmx(name):
     '''
     Generates TMX file from dictionary.
     '''
-    from translate.storage.tmx import tmxfile
     store = tmxfile()
 
     for source, extra, targets in ITEMS:
@@ -122,6 +138,7 @@ def write_tmx(name):
             store.addunit(unit)
 
     store.savefile(name)
+
 
 if __name__ == '__main__':
     # Check params
