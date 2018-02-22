@@ -11,6 +11,7 @@ install:
   - pip install -r requirements.txt
   - pip install -r requirements-test.txt
 script:
-  - coverage run ./l10n-slovnik
+  - coverage run --append ./l10n-slovnik file.tmx
+  - coverage run --append ./l10n-slovnik file.tbx
 after_script:
   - codecov
