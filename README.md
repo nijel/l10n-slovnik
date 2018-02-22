@@ -10,3 +10,4 @@ Downloads for [Czech translators dictionary][1], updated daily:
 [1]: http://wiki.l10n.cz/P%C5%99ekladatelsk%C3%BD_slovn%C3%ADk
 
 [![Build Status](https://travis-ci.org/nijel/l10n-slovnik.svg?branch=master)](https://travis-ci.org/nijel/l10n-slovnik)
+[![codecov](https://codecov.io/gh/nijel/l10n-slovnik/branch/master/graph/badge.svg)](https://codecov.io/gh/nijel/l10n-slovnik)
