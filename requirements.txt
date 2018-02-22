@@ -1,2 +1,3 @@
 six
 translate-toolkit
+lxml
