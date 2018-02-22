@@ -1,7 +1,9 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import urllib2
+from __future__ import print_function
+
+from six.moves.urllib.request import urlopen
 import re
 import sys
 
@@ -55,7 +57,7 @@ def process_dict():
     target = []
 
     # Open URL
-    handle = urllib2.urlopen(URL)
+    handle = urlopen(URL)
 
     for line in handle:
         line = line.decode('utf-8')
@@ -124,7 +126,7 @@ def write_tmx(name):
 if __name__ == '__main__':
     # Check params
     if len(sys.argv) != 2:
-        print 'Usage: l10n-slovik [file.tbx/tmx]'
+        print('Usage: l10n-slovik [file.tbx/tmx]')
         sys.exit(1)
 
     # Download/process dict
@@ -136,5 +138,5 @@ if __name__ == '__main__':
     elif 'tmx' in sys.argv[1]:
         write_tmx(sys.argv[1])
     else:
-        print 'Unkown format: %s' % sys.argv[1]
+        print('Unkown format: {}'.format(sys.argv[1]))
         sys.exit(1)
