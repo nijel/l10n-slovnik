@@ -1,5 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+"""
+Script to generate TBX / TMX dictionaries from wiki page.
+
+Specially crafted for Czech l10n team usage.
+"""
 
 from __future__ import print_function, unicode_literals
 
