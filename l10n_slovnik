@@ -11,6 +11,7 @@ from __future__ import print_function, unicode_literals
 import re
 import sys
 
+# pylint: disable=import-error
 from six.moves.urllib.request import urlopen
 
 from translate.storage.tbx import tbxfile
@@ -96,7 +97,8 @@ def process_dict():
                 continue
             line = line[1:].strip()
             # Skip notes
-            if line.startswith("''Poznámka:''") or line.startswith('Poznámka:'):
+            if (line.startswith("''Poznámka:''") or
+                    line.startswith('Poznámka:')):
                 continue
             if line[0] != '(':
                 target.append(line)

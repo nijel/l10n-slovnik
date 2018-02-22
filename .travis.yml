@@ -11,7 +11,10 @@ install:
   - pip install -r requirements.txt
   - pip install -r requirements-test.txt
 script:
-  - coverage run --append ./l10n-slovnik file.tmx
-  - coverage run --append ./l10n-slovnik file.tbx
+  - coverage run --append ./l10n_slovnik file.tmx
+  - coverage run --append ./l10n_slovnik file.tbx
+  - pep8 l10n_slovnik
+  - pylint --reports=n l10n_slovnik
+  - pyflakes l10n_slovnik
 after_script:
   - codecov
