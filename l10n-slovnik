@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
+from __future__ import print_function, unicode_literals
 
 from six.moves.urllib.request import urlopen
 import re
@@ -31,7 +31,7 @@ def new_item(source, target):
     '''
     for tgt in target:
         # We skip not yet decided terms
-        if 'v diskuzi' in tgt or u'zatím nesjednoceno' in tgt:
+        if 'v diskuzi' in tgt or 'zatím nesjednoceno' in tgt:
             return
 
     # Cleanup translations
@@ -75,7 +75,7 @@ def process_dict():
                 continue
             line = line[1:].strip()
             # Skip notes
-            if line.startswith(u"''Poznámka:''") or line.startswith(u'Poznámka:'):
+            if line.startswith("''Poznámka:''") or line.startswith('Poznámka:'):
                 continue
             if line[0] != '(':
                 target.append(line)
