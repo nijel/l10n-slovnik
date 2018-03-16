@@ -19,10 +19,10 @@ from translate.storage.tmx import tmxfile
 
 
 DISKUZE = re.compile(
-    r'\(\[http://lists.ubuntu.cz/pipermail/diskuze/[^ ]* [^\]]*diskuze\]\)'
+    r'\(\[http://(lists.ubuntu.cz|lists.l10n.cz)/pipermail/diskuze/[^ ]* [^\]]*diskuze\]\)'
 )
 DISKUZE2 = re.compile(
-    r'[; ]*\[http://lists.ubuntu.cz/pipermail/diskuze/'
+    r'[; ]*\[http://(lists.ubuntu.cz|lists.l10n.cz)/pipermail/diskuze/'
     r'[^ ]* [^\]]*diskuze\][; ]*'
 )
 
