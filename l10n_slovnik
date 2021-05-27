@@ -80,34 +80,34 @@ def process_dict():
     target = []
 
     # Open URL
-    handle = urlopen(URL)
+    with urlopen(URL) as handle:
 
-    for line in handle:
-        line = line.decode('utf-8')
-        if line[0] == ';':
-            # Source string
-            if source:
-                # Add new item if we had previous one
+        for line in handle:
+            line = line.decode('utf-8')
+            if line[0] == ';':
+                # Source string
+                if source:
+                    # Add new item if we had previous one
+                    new_item(source, target)
+                    source = ''
+                    target = []
+                source = line[1:].strip()
+            elif line[0] == ':':
+                # Translation
+                if source == '':
+                    continue
+                line = line[1:].strip()
+                # Skip notes
+                if (line.startswith("''Poznámka:''") or
+                        line.startswith('Poznámka:')):
+                    continue
+                if line[0] != '(':
+                    target.append(line)
+            elif source != '':
+                # End of section/glossary, add word
                 new_item(source, target)
                 source = ''
                 target = []
-            source = line[1:].strip()
-        elif line[0] == ':':
-            # Translation
-            if source == '':
-                continue
-            line = line[1:].strip()
-            # Skip notes
-            if (line.startswith("''Poznámka:''") or
-                    line.startswith('Poznámka:')):
-                continue
-            if line[0] != '(':
-                target.append(line)
-        elif source != '':
-            # End of section/glossary, add word
-            new_item(source, target)
-            source = ''
-            target = []
 
 
 def write_tbx(name):
