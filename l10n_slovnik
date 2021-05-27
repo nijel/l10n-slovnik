@@ -11,8 +11,7 @@ from __future__ import print_function, unicode_literals
 import re
 import sys
 
-# pylint: disable=import-error
-from six.moves.urllib.request import urlopen
+from urllib.request import urlopen
 
 from translate.storage.tbx import tbxfile
 from translate.storage.tmx import tmxfile
