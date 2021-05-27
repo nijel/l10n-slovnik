@@ -32,7 +32,7 @@ ITEMS = []
 
 def clean_target(target):
     """
-    Removes not useful things from translation
+    Remove not useful things from translation.
 
     * links to discussions
     * whitespace
@@ -43,9 +43,7 @@ def clean_target(target):
 
 
 def new_item(source, target):
-    """
-    Stores new item in dictionary.
-    """
+    """Store new item in dictionary."""
     for tgt in target:
         # We skip not yet decided terms
         if "v diskuzi" in tgt or "zatím nesjednoceno" in tgt:
@@ -68,9 +66,7 @@ def new_item(source, target):
 
 
 def process_dict():
-    """
-    Downloads dictionary from wiki and processes words.
-    """
+    """Download dictionary from wiki and processes words."""
     source = ""
     target = []
 
@@ -97,7 +93,7 @@ def process_dict():
                     continue
                 if line[0] != "(":
                     target.append(line)
-            elif source != "":
+            elif source:
                 # End of section/glossary, add word
                 new_item(source, target)
                 source = ""
@@ -105,9 +101,7 @@ def process_dict():
 
 
 def write_tbx(name):
-    """
-    Generates TBX file from dictionary.
-    """
+    """Generate TBX file from dictionary."""
     store = tbxfile()
 
     for source, extra, targets in ITEMS:
@@ -124,9 +118,7 @@ def write_tbx(name):
 
 
 def write_tmx(name):
-    """
-    Generates TMX file from dictionary.
-    """
+    """Generate TMX file from dictionary."""
     store = tmxfile()
 
     for source, extra, targets in ITEMS:
