@@ -1,0 +1,21 @@
+name: Test
+
+on: [push, pull_request]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.6, 3.7, 3.8, 3.9]
+    steps:
+      - uses: actions/checkout@v2.3.3
+      - run: pip install -r requirements-test.txt
+      - run: coverage run --append ./l10n_slovnik file.tmx
+      - run: coverage run --append ./l10n_slovnik file.tbx
+      - run: coverage run --append ./l10n_slovnik || true
+      - run: coverage run --append ./l10n_slovnik invalid || true
+      - run: pycodestyle l10n_slovnik
+      - run: pylint --reports=n l10n_slovnik
+      - run: pyflakes l10n_slovnik
+      - uses: codecov/codecov-action@v1.5.0
