@@ -18,4 +18,5 @@ jobs:
       - run: pycodestyle l10n_slovnik
       - run: pylint --reports=n l10n_slovnik
       - run: pyflakes l10n_slovnik
+      - run: pre-commit run --all-files
       - uses: codecov/codecov-action@v1.5.0

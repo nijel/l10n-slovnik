@@ -1,69 +1,65 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
 """
 Script to generate TBX / TMX dictionaries from wiki page.
 
 Specially crafted for Czech l10n team usage.
 """
 
-from __future__ import print_function, unicode_literals
 
 import re
 import sys
-
 from urllib.request import urlopen
 
 from translate.storage.tbx import tbxfile
 from translate.storage.tmx import tmxfile
 
-
 DISKUZE = re.compile(
-    r'\(\[http://(lists.ubuntu.cz|lists.l10n.cz)/'
-    r'pipermail/diskuze/[^ ]* [^\]]*diskuze\]\)'
+    r"\(\[http://(lists.ubuntu.cz|lists.l10n.cz)/"
+    r"pipermail/diskuze/[^ ]* [^\]]*diskuze\]\)"
 )
 DISKUZE2 = re.compile(
-    r'[; ]*\[http://(lists.ubuntu.cz|lists.l10n.cz)/pipermail/diskuze/'
-    r'[^ ]* [^\]]*diskuze\][; ]*'
+    r"[; ]*\[http://(lists.ubuntu.cz|lists.l10n.cz)/pipermail/diskuze/"
+    r"[^ ]* [^\]]*diskuze\][; ]*"
 )
 
 URL = (
-    'http://wiki.l10n.cz/index.php'
-    '?title=P%C5%99ekladatelsk%C3%BD_slovn%C3%ADk&action=raw'
+    "http://wiki.l10n.cz/index.php"
+    "?title=P%C5%99ekladatelsk%C3%BD_slovn%C3%ADk&action=raw"
 )
 
 ITEMS = []
 
 
 def clean_target(target):
-    '''
+    """
     Removes not useful things from translation
 
     * links to discussions
     * whitespace
-    '''
-    target = DISKUZE.sub('', target)
-    target = DISKUZE2.sub('', target)
+    """
+    target = DISKUZE.sub("", target)
+    target = DISKUZE2.sub("", target)
     return target.strip()
 
 
 def new_item(source, target):
-    '''
+    """
     Stores new item in dictionary.
-    '''
+    """
     for tgt in target:
         # We skip not yet decided terms
-        if 'v diskuzi' in tgt or 'zatím nesjednoceno' in tgt:
+        if "v diskuzi" in tgt or "zatím nesjednoceno" in tgt:
             return
 
     # Cleanup translations
     target = [clean_target(tgt) for tgt in target]
 
     # Split clarification of source word
-    if '(' in source and source[-1] == ')':
-        source, extra = source.split('(', 1)
-        extra = extra.strip().rstrip(')').strip()
+    if "(" in source and source[-1] == ")":
+        source, extra = source.split("(", 1)
+        extra = extra.strip().rstrip(")").strip()
     else:
-        extra = ''
+        extra = ""
 
     source = source.strip()
 
@@ -72,95 +68,94 @@ def new_item(source, target):
 
 
 def process_dict():
-    '''
+    """
     Downloads dictionary from wiki and processes words.
-    '''
-    source = ''
+    """
+    source = ""
     target = []
 
     # Open URL
     with urlopen(URL) as handle:
 
         for line in handle:
-            line = line.decode('utf-8')
-            if line[0] == ';':
+            line = line.decode("utf-8")
+            if line[0] == ";":
                 # Source string
                 if source:
                     # Add new item if we had previous one
                     new_item(source, target)
-                    source = ''
+                    source = ""
                     target = []
                 source = line[1:].strip()
-            elif line[0] == ':':
+            elif line[0] == ":":
                 # Translation
-                if source == '':
+                if source == "":
                     continue
                 line = line[1:].strip()
                 # Skip notes
-                if (line.startswith("''Poznámka:''") or
-                        line.startswith('Poznámka:')):
+                if line.startswith("''Poznámka:''") or line.startswith("Poznámka:"):
                     continue
-                if line[0] != '(':
+                if line[0] != "(":
                     target.append(line)
-            elif source != '':
+            elif source != "":
                 # End of section/glossary, add word
                 new_item(source, target)
-                source = ''
+                source = ""
                 target = []
 
 
 def write_tbx(name):
-    '''
+    """
     Generates TBX file from dictionary.
-    '''
+    """
     store = tbxfile()
 
     for source, extra, targets in ITEMS:
-        if extra != '':
-            source = '%s (%s)' % (source, extra)
+        if extra != "":
+            source = f"{source} ({extra})"
         for target in targets:
-            if target == '':
+            if target == "":
                 continue
             unit = store.UnitClass(source)
-            unit.settarget(target, 'cs')
+            unit.settarget(target, "cs")
             store.addunit(unit)
 
     store.savefile(name)
 
 
 def write_tmx(name):
-    '''
+    """
     Generates TMX file from dictionary.
-    '''
+    """
     store = tmxfile()
 
     for source, extra, targets in ITEMS:
-        if extra != '':
-            source = '%s (%s)' % (source, extra)
+        if extra != "":
+            source = f"{source} ({extra})"
         for target in targets:
-            if target == '':
+            if target == "":
                 continue
             unit = store.UnitClass(source)
-            unit.settarget(target, 'cs')
+            unit.settarget(target, "cs")
             store.addunit(unit)
 
     store.savefile(name)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # Check params
     if len(sys.argv) != 2:
-        print('Usage: l10n-slovik [file.tbx/tmx]')
+        print("Usage: l10n-slovik [file.tbx/tmx]")
         sys.exit(1)
 
     # Download/process dict
     process_dict()
 
     # Stupid params handling to save dict
-    if 'tbx' in sys.argv[1]:
+    if "tbx" in sys.argv[1]:
         write_tbx(sys.argv[1])
-    elif 'tmx' in sys.argv[1]:
+    elif "tmx" in sys.argv[1]:
         write_tmx(sys.argv[1])
     else:
-        print('Unkown format: {}'.format(sys.argv[1]))
+        print(f"Unkown format: {sys.argv[1]}")
         sys.exit(1)
