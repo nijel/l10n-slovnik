@@ -4,3 +4,4 @@ pycodestyle
 pyflakes
 pylint
 codecov
+-r requirements.txt
