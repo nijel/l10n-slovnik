@@ -19,4 +19,4 @@ jobs:
       - run: pylint --reports=n l10n_slovnik
       - run: pyflakes l10n_slovnik
       - run: pre-commit run --all-files
-      - uses: codecov/codecov-action@v2.0.2
+      - uses: codecov/codecov-action@v2.0.3
