@@ -1,2 +1,2 @@
 lxml==4.9.0
-translate-toolkit==3.7.0
+translate-toolkit==3.7.1
