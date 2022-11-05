@@ -23,8 +23,7 @@ DISKUZE2 = re.compile(
 )
 
 URL = (
-    "http://wiki.l10n.cz/index.php"
-    "?title=P%C5%99ekladatelsk%C3%BD_slovn%C3%ADk&action=raw"
+    "https://gitlab.com/OpenAlt/L10Ncz/l10n-cz/-/raw/master/_pages/wiki/Slovn%C3%ADky/P%C5%99ekladatelsk%C3%BD_slovn%C3%ADk.md"
 )
 
 ITEMS = []
@@ -69,13 +68,20 @@ def process_dict():
     """Download dictionary from wiki and processes words."""
     source = ""
     target = []
+    header = True
+
 
     # Open URL
     with urlopen(URL) as handle:
 
         for line in handle:
-            line = line.decode("utf-8")
-            if line[0] == ";":
+            line = line.decode("utf-8").strip()
+            if header:
+                if line != "# A":
+                    continue
+                header = False
+
+            if line.startswith("-"):
                 # Source string
                 if source:
                     # Add new item if we had previous one
@@ -83,13 +89,12 @@ def process_dict():
                     source = ""
                     target = []
                 source = line[1:].strip()
-            elif line[0] == ":":
+            elif line:
                 # Translation
                 if source == "":
                     continue
-                line = line[1:].strip()
                 # Skip notes
-                if line.startswith("''Poznámka:''") or line.startswith("Poznámka:"):
+                if line.startswith("*Poznámka:*") or line.startswith("Poznámka:") or line.startswith("["):
                     continue
                 if line[0] != "(":
                     target.append(line)
