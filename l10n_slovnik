@@ -22,7 +22,10 @@ DISKUZE2 = re.compile(
     r"[^ ]* [^\]]*diskuze\][; ]*"
 )
 
-URL = "https://gitlab.com/OpenAlt/L10Ncz/l10n-cz/-/raw/master/_pages/wiki/Slovn%C3%ADky/P%C5%99ekladatelsk%C3%BD_slovn%C3%ADk.md"
+URL = (
+    "https://gitlab.com/OpenAlt/L10Ncz/l10n-cz/-/raw/master/_pages/wiki/"
+    "Slovn%C3%ADky/P%C5%99ekladatelsk%C3%BD_slovn%C3%ADk.md"
+)
 
 ITEMS = []
 
