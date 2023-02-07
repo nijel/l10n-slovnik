@@ -73,7 +73,6 @@ def process_dict():
 
     # Open URL
     with urlopen(URL) as handle:
-
         for line in handle:
             line = line.decode("utf-8").strip()
             if header:
