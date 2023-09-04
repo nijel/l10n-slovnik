@@ -12,7 +12,7 @@ jobs:
           - "3.10"
           - "3.11"
     steps:
-      - uses: actions/checkout@v3.6.0
+      - uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4.0.0
       - run: pip install -r requirements-test.txt
       - run: coverage run --append ./l10n_slovnik file.tmx
       - run: coverage run --append ./l10n_slovnik file.tbx
