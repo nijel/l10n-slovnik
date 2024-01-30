@@ -73,8 +73,8 @@ def process_dict():
 
     # Open URL
     with urlopen(URL) as handle:
-        for line in handle:
-            line = line.decode("utf-8").strip()
+        for source_line in handle:
+            line = source_line.decode("utf-8").strip()
             if header:
                 if line != "# A":
                     continue
@@ -93,11 +93,7 @@ def process_dict():
                 if source == "":
                     continue
                 # Skip notes
-                if (
-                    line.startswith("*Poznámka:*")
-                    or line.startswith("Poznámka:")
-                    or line.startswith("[")
-                ):
+                if line.startswith(("*Poznámka:*", "Poznámka:", "[")):
                     continue
                 if line[0] != "(":
                     target.append(line)
@@ -114,7 +110,7 @@ def write_tbx(name):
 
     for source, extra, targets in ITEMS:
         if extra != "":
-            source = f"{source} ({extra})"
+            source = f"{source} ({extra})"  # noqa: PLW2901
         for target in targets:
             if target == "":
                 continue
@@ -131,7 +127,7 @@ def write_tmx(name):
 
     for source, extra, targets in ITEMS:
         if extra != "":
-            source = f"{source} ({extra})"
+            source = f"{source} ({extra})"  # noqa: PLW2901
         for target in targets:
             if target == "":
                 continue
