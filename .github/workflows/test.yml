@@ -8,14 +8,14 @@ jobs:
     strategy:
       matrix:
         python-version:
-          - "3.9"
-          - "3.10"
-          - "3.11"
+        - '3.9'
+        - '3.10'
+        - '3.11'
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-      - run: pip install -r requirements-test.txt
-      - run: coverage run --append ./l10n_slovnik file.tmx
-      - run: coverage run --append ./l10n_slovnik file.tbx
-      - run: coverage run --append ./l10n_slovnik || true
-      - run: coverage run --append ./l10n_slovnik invalid || true
-      - uses: codecov/codecov-action@v3.1.5
+    - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11   # v4.1.1
+    - run: pip install -r requirements-test.txt
+    - run: coverage run --append ./l10n_slovnik file.tmx
+    - run: coverage run --append ./l10n_slovnik file.tbx
+    - run: coverage run --append ./l10n_slovnik || true
+    - run: coverage run --append ./l10n_slovnik invalid || true
+    - uses: codecov/codecov-action@v3.1.5
